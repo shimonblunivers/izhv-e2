@@ -13,11 +13,6 @@ public class Obstacle : MonoBehaviour
     /// Mask for objects causing the obstacle to disappear.
     /// </summary>
     public LayerMask despawnLayerMask;
-
-    /// <summary>
-    /// Movement speed of this obstacle.
-    /// </summary>
-    public float movementSpeed = 1.0f;
     
     /// <summary>
     /// Direction of movement.
@@ -39,10 +34,7 @@ public class Obstacle : MonoBehaviour
     /// </summary>
     void Start()
     {
-        mRB = GetComponent<Rigidbody2D>();
         mBC = GetComponent<BoxCollider2D>();
-
-        mRB.velocity = movementDirection * movementSpeed;
     }
 
     /// <summary>

@@ -10,6 +10,8 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class Spawner : MonoBehaviour
 {
+    private float currentObstacleSpeed = 2f;
+    
     /// <summary>
     /// Should we spawn obstacles?
     /// </summary>
@@ -73,7 +75,6 @@ public class Spawner : MonoBehaviour
             { // Spawn at most one obstacle per frame.
                 spawnAccumulator -= nextSpawnIn;
                 nextSpawnIn = RandomNormal(spawnFrequencyMean, spawnFrequencyStd);
-                
                 SpawnObstacle();
             }
         }
@@ -99,6 +100,8 @@ public class Spawner : MonoBehaviour
         
         // Move the obstacle into the correct layer.
         obstacle.layer = LayerMask.NameToLayer(spawnLayer);
+        
+        obstacle.GetComponent<Rigidbody2D>().velocity = new Vector2(-currentObstacleSpeed, 0.0f);
     }
 
     /// <summary>
@@ -129,6 +132,7 @@ public class Spawner : MonoBehaviour
     /// </summary>
     public void ModifyObstacleSpeed(float multiplier)
     {
+        currentObstacleSpeed *= multiplier;
         // Get obstacle layer to filter with.
         var obstacleLayer = LayerMask.NameToLayer(spawnLayer);
         // Modify only the x-axis movement.
@@ -136,7 +140,7 @@ public class Spawner : MonoBehaviour
         foreach (Transform child in transform)
         { // Iterate through all children, modifying current speed of obstacles.
             if (child.gameObject.layer == obstacleLayer) 
-            { child.GetComponent<Rigidbody2D>().velocity *= xMultiplier; }
+            { child.GetComponent<Rigidbody2D>().velocity = new Vector2(-currentObstacleSpeed, 0); }
         }
     }
 

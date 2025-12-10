@@ -8,6 +8,10 @@ using UnityEngine.UI;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    public float speedMultiplier = 1.1f;
+    public float changeSpeedAfter = 5f; // Score required to change the speed of the game
+    private float lastChangedSpeedAt = 0f; // Score of the last change
+    
     /// <summary>
     /// GameObject used for the start text.
     /// </summary>
@@ -99,6 +103,12 @@ public class GameManager : MonoBehaviour
             mCurrentScore += Time.deltaTime;
             // Update the score text.
             GetChildNamed(scoreText, "Value").GetComponent<Text>().text = $"{(int)(mCurrentScore)}";
+
+            if (mCurrentScore > lastChangedSpeedAt + changeSpeedAfter)
+            {
+                lastChangedSpeedAt = mCurrentScore;
+                spawner.GetComponent<Spawner>().ModifyObstacleSpeed(speedMultiplier);
+            }
         }
     }
 
